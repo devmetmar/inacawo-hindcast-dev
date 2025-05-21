@@ -8,10 +8,6 @@ class getERA5:
         Initialized ERA5 downloader.
         TSTART: {self.tstart}
         TEND  : {self.tend}
-
-        ----------------------------
-        version 1
-        created by: @yothunder
         ============================
         """)
         self.config = self.load_yaml()
@@ -97,11 +93,13 @@ if __name__ == "__main__":
         - area for subsetting\n
         - file format\n
         - download format
+        ----------------------------\n
+        version 1\n
+        created by: @yothunder
         """
     )
     parser.add_argument("tstart", type=str, help="Time start in YYYYMMDD. Example: 20241201", metavar="tstart")
     parser.add_argument("tend", type=str, help="Time end in YYYYMMDD. Example: 20250101", metavar="tend")
     args = parser.parse_args()
 
-    # getERA5(args.tstart, args.tend)
     getERA5(args.tstart, args.tend).get_data()

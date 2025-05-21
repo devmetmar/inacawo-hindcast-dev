@@ -21,3 +21,39 @@ era5:
   format: netcdf
   download_format: unarchived
   out_dir: /scratch/cawofcst_dev/data/hindcast/data/input/era5/%Y/%m
+
+mercatorocean:
+  dataset_id: 
+    - cmems_mod_glo_phy_my_0.083deg_P1D-m # daily 01/01/1993–30/06/2021
+    - cmems_mod_glo_phy_myint_0.083deg_P1D-m # daily 01/07/2021–22/04/2025
+  variables:
+    - so
+    - thetao
+    - uo
+    - vo
+    - zos
+  area:  # [North, West, South, East]
+    - 16
+    - 89
+    - -16
+    - 146
+  out_dir: /scratch/cawofcst_dev/data/hindcast/data/input/mercatorocean/%Y/%m
+  user: aramdhani1
+  pass: Maritim4ever!
+
+mercatorwave:
+  dataset_id: 
+    - cmems_mod_glo_wav_my_0.2deg_PT3H-i # 3-hourly 01/01/1980–01/05/2023
+    - cmems_mod_glo_wav_myint_0.2deg_PT3H-i # 3-hourly 01/05/2023–01/04/2025
+  variables:
+    - VHM0 # Spectral significant wave height (Hm0)
+    - VMDR # Mean wave direction from (Mdir)
+    - VTPK # Wave period at spectral peak / peak period (Tp)
+  area:  # [North, West, South, East]
+    - 16
+    - 89
+    - -16
+    - 146
+  out_dir: /scratch/cawofcst_dev/data/hindcast/data/input/mercatorwave/%Y/%m
+  user: aramdhani1
+  pass: Maritim4ever!
