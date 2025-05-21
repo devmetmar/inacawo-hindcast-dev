@@ -1,0 +1,23 @@
+era5:
+  dataset: reanalysis-era5-single-levels
+  product_type: reanalysis
+  variables:
+    - 10m_u_component_of_wind
+    - 10m_v_component_of_wind
+    - 2m_dewpoint_temperature
+    - 2m_temperature
+    - mean_sea_level_pressure
+    - total_precipitation
+    - surface_net_solar_radiation
+    - surface_net_thermal_radiation
+    - surface_solar_radiation_downwards
+    - surface_thermal_radiation_downwards
+  timefreq: 3h
+  area:  # [North, West, South, East]
+    - 16
+    - 89
+    - -16
+    - 146
+  format: netcdf
+  download_format: unarchived
+  out_dir: /scratch/cawofcst_dev/data/hindcast/data/input/era5/%Y/%m
