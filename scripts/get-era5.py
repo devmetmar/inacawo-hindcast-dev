@@ -68,7 +68,7 @@ class getERA5:
         client = cdsapi.Client()
         request = {
             "product_type": [self.config['product_type']],
-            "variable": [self.config['variables']],
+            "variable": self.config['variables'],
             "year": [f"{d:02d}" for d in timerange.dt.year.unique()],
             "month": [f"{d:02d}" for d in timerange.dt.month.unique()],
             "day": [f"{d:02d}" for d in timerange.dt.day.unique()],
