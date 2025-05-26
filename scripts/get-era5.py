@@ -54,14 +54,17 @@ class getERA5:
 
     def get_data(self):
         import os
+        import zipfile
+        import shutil
         import cdsapi
         import logging
         import pandas as pd
+        import xarray as xr
         from pprint import pformat
 
         timerange = pd.Series(pd.date_range(self.tstart, self.tend, freq=self.config['timefreq'], inclusive='left'))
         out_dir = timerange[0].strftime(self.config['out_dir'])
-        target = f"{out_dir}/era5_{self.tstart}_{self.tend}.nc"
+        target = f"{out_dir}/era5_{self.tstart}_{self.tend}.zip"
         if not os.path.exists(os.path.dirname(target)):
             os.makedirs(os.path.dirname(target))
         
@@ -80,6 +83,26 @@ class getERA5:
         self.logger.info("Retrieving ERA5 configuration:\n%s", pformat(request))
         client.retrieve(self.config['dataset'], request, target)
         self.logger.info(f"Data downloaded to {target}")
+
+        self.logger.info("Unzipping data ...")
+        with zipfile.ZipFile(target, 'r') as zip_ref:
+            zip_ref.extractall(target.replace('.zip', ''))
+        self.logger.info(f"Data extracted to {target.replace('.zip', '')}")
+        self.logger.info("Cleaning up zip file ...")
+        os.remove(target)
+        self.logger.info(f"Removed zip file: {target}")
+
+        self.logger.info(f"Combining datasets ...")
+        lifiles = [os.path.join(root, f) for root, dirs, files in os.walk(target.replace('.zip', '')) for f in files if f.endswith('.nc')]
+        self.logger.info(f"Found {len(lifiles)} NetCDF files to combine. Files: {lifiles}")
+        dsets   = xr.open_mfdataset(lifiles, combine='by_coords', parallel=True)
+        dsets.to_netcdf(target.replace('.zip', '.nc'), mode='w')
+        extracted_dir = target.replace('.zip', '')
+        if os.path.exists(extracted_dir):
+            shutil.rmtree(extracted_dir)
+        self.logger.info(f"Removed extracted directory: {extracted_dir}")
+        self.logger.info("ERA5 data retrieval completed successfully.")
+        self.logger.info(f"Combined dataset saved to {target.replace('.zip', '.nc')}")
 
 if __name__ == "__main__":
     import argparse
