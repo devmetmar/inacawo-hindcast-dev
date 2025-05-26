@@ -78,7 +78,8 @@ class getERA5:
             "area": self.config['area']
         }
         self.logger.info("Retrieving ERA5 configuration:\n%s", pformat(request))
-        client.retrieve(self.config['dataset'], request).download()
+        client.retrieve(self.config['dataset'], request, target)
+        self.logger.info(f"Data downloaded to {target}")
 
 if __name__ == "__main__":
     import argparse
